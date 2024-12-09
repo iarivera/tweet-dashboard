@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <h1>Upload a JSON File</h1>
-      <input type="file" accept=".csv" onChange={handleFileUpload} />
+      <input type="file" accept=".json" onChange={handleFileUpload} />
       <div
         style={{
           display: 'flex',

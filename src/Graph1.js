@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
 function Graph1({ data }) {
-  return (
-    <div style={{ flex: 1, border: '1px solid black', margin: '5px', padding: '10px' }}>
-      <h3>Visualization</h3>
-      {data ? (
-        <svg width="100%" height="100%">
-          {/* Render specific graph using D3 here */}
-        </svg>
-      ) : (
-        <p>Upload a JSON file to display the graph</p>
-      )}
-    </div>
+    const svgRef = useRef();
+    const width = 1000;
+    const height = 1000;
+
+    useEffect(() => {
+        if (!data) return;
+
+        console.log(data);
+
+        const colorMenu = d3.select('#colorDropdown');
+
+        colorMenu.append("text")
+            .style("fill", "black")
+            .text("Color By: ");
+
+        colorMenu.append('select')
+            .selectAll('option')
+            .data(['Sentiment', 'Subjectivity'])
+            .join('option')
+            .attr('value', d => d)
+            .text(d => d); 
+
+            
+
+    }, [data])
+
+    return (
+        <div style={{ flex: 1, margin: '5px', padding: '10px' }}>
+            <div id="colorDropdown"></div>
+            <svg ref={svgRef} width={width} height={height}></svg>
+        </div>
   );
 }
 
