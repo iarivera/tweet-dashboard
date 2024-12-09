@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import * as d3 from 'd3';
+import Graph1 from './Graph1';
 import './App.css';
 
 function App() {
+  const [data, setData] = useState(null);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const text = e.target.result;
+      const parsedData = d3.csvParse(text);
+      setData(parsedData);
+    };
+
+    if (file) {
+      reader.readAsText(file);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Upload a JSON File</h1>
+      <input type="file" accept=".csv" onChange={handleFileUpload} />
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '10px',
+          justifyContent: 'space-between',
+        }}>
+          <Graph1 data={data}/>
+      </div>
     </div>
   );
 }
